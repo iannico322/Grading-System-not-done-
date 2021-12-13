@@ -4,25 +4,12 @@ import os
 from tkinter import ttk
 from tkinter import font
 from PIL import ImageTk, Image
-def logout():
-    
-    root.withdraw()
-    os.system('login.py')
-    
-def on_enter(event):
-    logout_button.config(image=logout_button_photo2)
-    
-def on_leave(enter):
-    logout_button.config(image=logout_button_photo)
 
-def on_enter1(event):
-    calculate_button.config(image=cal_button2)
-def on_leave1(enter):
-    calculate_button.config(image=cal_button)
+
 def calculate():
     pop = Tk()
     pop.title('Result')
-    pop.iconbitmap('resources/img/folder-icon.ico')
+    #pop.iconbitmap('resources/img/folder-icon.ico')
     width = 572
     height = 405
     screen_width = pop.winfo_screenwidth()
@@ -36,7 +23,6 @@ def calculate():
     #calculation
     attendanceGrade = ((ATTENDANCE1.get() + ATTENDANCE1.get() + ATTENDANCE3.get() )/3)*100
 
-
     quizOne = (QUIZ1.get() / 20) * 100
     quizTwo = (QUIZ2.get() / 10) * 100
     quizThree = (QUIZ3.get() / 20) * 100
@@ -44,79 +30,51 @@ def calculate():
     quizGrade = (quizOne + quizTwo + quizThree) / 3
 
     classpationGrade = (PARTICIPATION.get() / 3) * 100
-    
+
     assignmentOne = (ASS1.get() / 40) * 100
     assignmentTwo = (ASS2.get() / 20) * 100
     assignmentThree = (ASS3.get() / 50) * 100
 
     assignmentGrade = (assignmentOne + assignmentTwo + assignmentThree) / 3
-    
+
     projectOne = (PROJECT1.get()/ 60) * 100
     projectTwo = (PROJECT2.get() / 40) * 100
     projectThree = (PROJECT3.get()/ 50) * 100
     projectGrade = (projectOne + projectTwo + projectThree) / 3
-    
+
     handsOnOne = (HANDSON1.get()/ 100) * 100
     handsOnTwo = (HANDSON2.get()/ 100) * 100
     handsOnGrade = (handsOnOne + handsOnTwo) / 2
-    
+
     majorExamGrade = (MAJOREXAM.get() / 80) * 100
     participationGrade = ((classpationGrade + assignmentGrade + projectGrade) /3 )
     finalGrade = ((attendanceGrade * .15) + (quizGrade * .15) + (participationGrade * .15)+(handsOnGrade * .20)+(majorExamGrade* .35))
-	
-    finalGrade = round(finalGrade, 2)
-   
-    if(finalGrade > 50):
-        finalGrade = 1.0
-    elif (finalGrade == 94):
-        finalGrade = 1.1
-    elif(finalGrade == 93):
-        finalGrade = 1.2
-    elif(finalGrade == 92):
-        finalGrade = 1.3
-    elif (finalGrade == 91):
-        finalGrade = 1.4
-    elif (finalGrade == 90):
-        finalGrade = 1.5
-    elif (finalGrade == 89):
-        finalGrade = 1.6
-    elif (finalGrade == 88):
-        finalGrade = 1.7
-    elif (finalGrade == 87):
-        finalGrade = 1.8
-    elif (finalGrade == 86):
-        finalGrade = 1.9
-    elif (finalGrade == 85):
-        finalGrade = 2.0
-    elif (finalGrade == 84):
-        finalGrade = 2.1
-    elif (finalGrade == 83):
-        finalGrade = 2.2
-    elif (finalGrade == 82):
-        finalGrade = 2.3
-    elif (finalGrade == 81):
-        finalGrade = 2.4
-    elif (finalGrade == 80):
-        finalGrade = 2.5
-    elif (finalGrade == 79):
-        finalGrade = 2.6
-    elif (finalGrade == 78):
-        finalGrade = 2.7
-    elif (finalGrade == 77):
-        finalGrade = 2.8
-    elif (finalGrade == 76):
-        finalGrade = 2.9
-    elif (finalGrade == 75):
-        finalGrade = 3.0
-    elif (finalGrade <= 74):
-        finalGrade = 0.0
-		
 
-    if(finalGrade == 0.0):
-        remarks = "Failed"
-    else:
+
+    """
+    Convert finalGrade to int.
+
+    Check if finalGrade is in the dictionary key, if it is assign remarks and
+    finalGrade with 'Passed' and finalGrade with the value of the key.
+    Otherwise, check if finalGrade is >= 95, if it is, assign remarks and finalGrade
+    with 'Passed' and 1.0; if it isn't assign them with 'Failed' and 5.0.
+    """
+    finalGrade = int(finalGrade)
+
+    grading_system = {
+        94 : 1.1, 93 : 1.2, 92 : 1.3, 91 : 1.4, 90 : 1.5, 89 : 1.6, 87 : 1.7,
+        86 : 1.8, 85 : 1.9, 84 : 2.0, 83 : 2.1, 82 : 2.2, 81 : 2.3, 80 : 2.4,
+        79 : 2.5, 78 : 2.6, 77 : 2.7, 76 : 2.8, 75 : 2.9,
+    }
+
+    if grading_system.get(finalGrade):
         remarks = "Passed"
-		
+        finalGrade = grading_system.get(finalGrade)
+    else:
+        remarks = "Passed" if finalGrade >= 95 else "Failed"
+        finalGrade = 1.0 if finalGrade >= 95 else 5.0
+
+
 #     ID Number:
 # Name of the Student:
 # Course and Year:
@@ -139,7 +97,7 @@ def calculate():
     Label(pop,text=f"Project Grade: {projectGrade}").grid(row=7,column = 1)
     Label(pop,text=f"Hands-on Grade: {handsOnGrade}").grid(row=8,column = 1)
     Label(pop,text=f"Major Exam Grade: {majorExamGrade}").grid(row=9,column = 1)
-    
+
     Label(pop,text=f"Final Grade: {finalGrade}").grid(row=10,column = 1)
     Label(pop,text=f"Remarks: {remarks}").grid(row=11,column = 1)
     Button(pop,text='Save to Database', fg='orange',background='white',font='Inter 14').grid(row=12,column = 1)
@@ -148,48 +106,48 @@ def calculate():
 
 def limitSizeForAssignment(*args):
 
-    value = str(ASS1.get())
+    value = ASS1.get()
     if len(value) > 2: ASS1.set(value[:2])
-    value1 = str(ASS2.get())
-    if len(value1) > 2: ASS2.set(value1[:2])
-    value2 = str(ASS3.get())
-    if len(value2) > 2: ASS3.set(value2[:2])
+    value1 = ASS2.get()
+    if len(value1) > 2: ASS2.set(value1[:'2'])
+    value2 = ASS3.get()
+    if len(value2) > 2: ASS3.set(value2[:'2'])
 
 def limitSizeForHandsOn(*args):
 
-    value = str(HANDSON1.get())
+    value = HANDSON1.get()
     if len(value) > 3: HANDSON1.set(value[:3])
-    value1 = str(HANDSON2.get())
+    value1 = HANDSON2.get()
     if len(value1) > 3: HANDSON2.set(value1[:3])
 
 def limitSizeForMajorExam(*args):
-    
-    value = str(MAJOREXAM.get())
+
+    value = MAJOREXAM.get()
     if len(value) > 2: MAJOREXAM.set(value[:2])
 
 def limitSizeForQuizzes(*args):
 
-    value = str(QUIZ1.get())
+    value = QUIZ1.get()
     if len(value) > 2: QUIZ1.set(value[:2])
-    value1 = str(QUIZ2.get())
+    value1 = QUIZ2.get()
     if len(value1) > 2: QUIZ2.set(value1[:2])
-    value2 = str(QUIZ3.get())
+    value2 = QUIZ3.get()
     if len(value2) > 2: QUIZ3.set(value2[:2])
 def limitSizeForProjects(*args):
-    
-    value = str(PROJECT1.get())
+
+    value = PROJECT1.get()
     if len(value) > 2: PROJECT1.set(value[:2])
-    value1 = str(PROJECT2.get())
+    value1 = PROJECT2.get()
     if len(value1) > 2: PROJECT2.set(value1[:2])
-    value2 = str(PROJECT3.get())
+    value2 = PROJECT3.get()
     if len(value2) > 2: PROJECT3.set(value2[:2])
 
 #/functions=========================================
 root = Tk()
 root.title('E-GRADING')
-root.iconbitmap('resources/img/folder-icon.ico')
+#root.iconbitmap('resources/img/folder-icon.ico')
 width = 1072
-height = 645
+height = 605
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 x = (screen_width/2) - (width/2)
@@ -198,18 +156,12 @@ root.geometry("%dx%d+%d+%d" % (width, height, x, y))
 root.resizable(False, False)
 
 #Images=========================================
-main = Image.open('resources/img/main.png')
+main = Image.open('../resources/img/mainbig.png')
+cal_button = PhotoImage(file='../resources/img/calculate-button.png')
 
-cal_button = PhotoImage(file='resources/img/calculate-button.png')
-cal_button2 = PhotoImage(file='resources/img/calculate-button-active.png')
 
-set_grade_photo = PhotoImage(file='resources/img/setgrade-button.png')
 resized = main.resize((1072,605 ), Image.ANTIALIAS)
 new_pic = ImageTk.PhotoImage(resized)
-
-
-logout_button_photo = PhotoImage(file='resources/img/logout-inactive.png')
-logout_button_photo2 = PhotoImage(file='resources/img/logout-active.png')
 #/Images=========================================
 #Variables=========================================
 ID = StringVar()
@@ -263,13 +215,13 @@ course_and_section.place(x=650,y=48)
 name = Entry(root, textvariable=NAME,font='Inter 15',fg='orange',bg='white',width=19,bd=0)
 name.place(x=449,y=125)
 
-attendance1 = Checkbutton (fg='orange', variable=ATTENDANCE1,bg='white',bd=0,activebackground='white',cursor='hand2',activeforeground='white',onvalue=1,offvalue=0) 
+attendance1 = Checkbutton (fg='orange', variable=ATTENDANCE1,bg='white',bd=0,activebackground='white',cursor='hand2',activeforeground='white',onvalue=1,offvalue=0)
 attendance1.place(x=910,y=95)
 
-attendance2 = Checkbutton (fg='orange', variable=ATTENDANCE2,bg='white',bd=0,activebackground='white',cursor='hand2',activeforeground='white',onvalue=1,offvalue=0) 
+attendance2 = Checkbutton (fg='orange', variable=ATTENDANCE2,bg='white',bd=0,activebackground='white',cursor='hand2',activeforeground='white',onvalue=1,offvalue=0)
 attendance2.place(x=964,y=95)
 
-attendance3 = Checkbutton (fg='orange', variable=ATTENDANCE3,bg='white',bd=0,activebackground='white',cursor='hand2',activeforeground='white',onvalue=1,offvalue=0) 
+attendance3 = Checkbutton (fg='orange', variable=ATTENDANCE3,bg='white',bd=0,activebackground='white',cursor='hand2',activeforeground='white',onvalue=1,offvalue=0)
 attendance3.place(x=1018,y=95)
 
 
@@ -312,21 +264,10 @@ project2.place(x=852,y=408)
 project3 = Entry(root, textvariable=PROJECT3,font='Inter 16',fg='orange',bg='white',width=2,bd=0)
 project3.place(x=852,y=457)
 
-calculate_button = Button(root,image=cal_button,command=calculate,borderwidth=0,fg='#050505',bg='#f1f1f1',border=0,activebackground='#f1f1f1',cursor='hand2')
-calculate_button.place(x=464,y=511)
-calculate_button.bind("<Enter>", on_enter1)
-calculate_button.bind ("<Leave>", on_leave1)
+submit_button = Button(root,image=cal_button,command=calculate,borderwidth=0,fg='#050505',bg='#f1f1f1',border=0,activebackground='#f1f1f1',cursor='hand2')
+submit_button.place(x=464,y=511)
 root.config(bg='#17161b')
-
-setgrade_button = Button(root,image=set_grade_photo,command=logout,borderwidth=0,fg='#050505',bg='#a0a0a0',border=0,activebackground='#a0a0a0',cursor='hand2')
-setgrade_button.place(x=206,y=204)
-
-logout_button = Button(root,image=logout_button_photo,command=logout,borderwidth=0,fg='#050505',bg='#a0a0a0',border=0,activebackground='#a0a0a0',cursor='hand2')
-logout_button.place(x=229,y=370)
-logout_button.bind("<Enter>", on_enter)
-logout_button.bind ("<Leave>", on_leave)
 
 
 
 root.mainloop()
-
