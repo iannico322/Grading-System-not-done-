@@ -4,7 +4,21 @@ import os
 from tkinter import ttk
 from tkinter import font
 from PIL import ImageTk, Image
+def logout():
+    
+    root.withdraw()
+    os.system('login.py')
+    
+def on_enter(event):
+    logout_button.config(image=logout_button_photo2)
+    
+def on_leave(enter):
+    logout_button.config(image=logout_button_photo)
 
+def on_enter1(event):
+    calculate_button.config(image=cal_button2)
+def on_leave1(enter):
+    calculate_button.config(image=cal_button)
 def calculate():
     pop = Tk()
     pop.title('Result')
@@ -134,40 +148,40 @@ def calculate():
 
 def limitSizeForAssignment(*args):
 
-    value = ASS1.get()
+    value = str(ASS1.get())
     if len(value) > 2: ASS1.set(value[:2])
-    value1 = ASS2.get()
-    if len(value1) > 2: ASS2.set(value1[:'2'])
-    value2 = ASS3.get()
-    if len(value2) > 2: ASS3.set(value2[:'2'])
+    value1 = str(ASS2.get())
+    if len(value1) > 2: ASS2.set(value1[:2])
+    value2 = str(ASS3.get())
+    if len(value2) > 2: ASS3.set(value2[:2])
 
 def limitSizeForHandsOn(*args):
 
-    value = HANDSON1.get()
+    value = str(HANDSON1.get())
     if len(value) > 3: HANDSON1.set(value[:3])
-    value1 = HANDSON2.get()
+    value1 = str(HANDSON2.get())
     if len(value1) > 3: HANDSON2.set(value1[:3])
 
 def limitSizeForMajorExam(*args):
     
-    value = MAJOREXAM.get()
+    value = str(MAJOREXAM.get())
     if len(value) > 2: MAJOREXAM.set(value[:2])
 
 def limitSizeForQuizzes(*args):
 
-    value = QUIZ1.get()
+    value = str(QUIZ1.get())
     if len(value) > 2: QUIZ1.set(value[:2])
-    value1 = QUIZ2.get()
+    value1 = str(QUIZ2.get())
     if len(value1) > 2: QUIZ2.set(value1[:2])
-    value2 = QUIZ3.get()
+    value2 = str(QUIZ3.get())
     if len(value2) > 2: QUIZ3.set(value2[:2])
 def limitSizeForProjects(*args):
     
-    value = PROJECT1.get()
+    value = str(PROJECT1.get())
     if len(value) > 2: PROJECT1.set(value[:2])
-    value1 = PROJECT2.get()
+    value1 = str(PROJECT2.get())
     if len(value1) > 2: PROJECT2.set(value1[:2])
-    value2 = PROJECT3.get()
+    value2 = str(PROJECT3.get())
     if len(value2) > 2: PROJECT3.set(value2[:2])
 
 #/functions=========================================
@@ -175,7 +189,7 @@ root = Tk()
 root.title('E-GRADING')
 root.iconbitmap('resources/img/folder-icon.ico')
 width = 1072
-height = 605
+height = 645
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 x = (screen_width/2) - (width/2)
@@ -184,12 +198,18 @@ root.geometry("%dx%d+%d+%d" % (width, height, x, y))
 root.resizable(False, False)
 
 #Images=========================================
-main = Image.open('resources/img/mainbig.png')
+main = Image.open('resources/img/main.png')
+
 cal_button = PhotoImage(file='resources/img/calculate-button.png')
+cal_button2 = PhotoImage(file='resources/img/calculate-button-active.png')
 
-
+set_grade_photo = PhotoImage(file='resources/img/setgrade-button.png')
 resized = main.resize((1072,605 ), Image.ANTIALIAS)
 new_pic = ImageTk.PhotoImage(resized)
+
+
+logout_button_photo = PhotoImage(file='resources/img/logout-inactive.png')
+logout_button_photo2 = PhotoImage(file='resources/img/logout-active.png')
 #/Images=========================================
 #Variables=========================================
 ID = StringVar()
@@ -292,9 +312,19 @@ project2.place(x=852,y=408)
 project3 = Entry(root, textvariable=PROJECT3,font='Inter 16',fg='orange',bg='white',width=2,bd=0)
 project3.place(x=852,y=457)
 
-submit_button = Button(root,image=cal_button,command=calculate,borderwidth=0,fg='#050505',bg='#f1f1f1',border=0,activebackground='#f1f1f1',cursor='hand2')
-submit_button.place(x=464,y=511)
+calculate_button = Button(root,image=cal_button,command=calculate,borderwidth=0,fg='#050505',bg='#f1f1f1',border=0,activebackground='#f1f1f1',cursor='hand2')
+calculate_button.place(x=464,y=511)
+calculate_button.bind("<Enter>", on_enter1)
+calculate_button.bind ("<Leave>", on_leave1)
 root.config(bg='#17161b')
+
+setgrade_button = Button(root,image=set_grade_photo,command=logout,borderwidth=0,fg='#050505',bg='#a0a0a0',border=0,activebackground='#a0a0a0',cursor='hand2')
+setgrade_button.place(x=206,y=204)
+
+logout_button = Button(root,image=logout_button_photo,command=logout,borderwidth=0,fg='#050505',bg='#a0a0a0',border=0,activebackground='#a0a0a0',cursor='hand2')
+logout_button.place(x=229,y=370)
+logout_button.bind("<Enter>", on_enter)
+logout_button.bind ("<Leave>", on_leave)
 
 
 
